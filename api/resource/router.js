@@ -2,7 +2,7 @@
 const router = require("express").Router()
 const Resource = require("./model")
 
-router.use("/", (req, res) => {
+router.get("/", (req, res) => {
     Resource.getResources()
         .then(resources => {
             res.status(200).json(resources)
@@ -10,6 +10,17 @@ router.use("/", (req, res) => {
         .catch(err => {
             res.status(500).json({ err: err.message })
         })
+})
+
+router.post("/", (req, res) => {
+    const newResource = req.body
+    Resource.addResource(newResource)
+    .then(resource => {
+        res.status(201).json(resource)
+    })
+    .catch((err) => {
+        res.status(500).json({ err: err.message })
+    })
 })
 
 module.exports = router
